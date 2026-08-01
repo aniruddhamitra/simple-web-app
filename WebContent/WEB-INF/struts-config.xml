@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+
+    <!-- Form Bean Definitions -->
+    <form-beans>
+        <form-bean name="loginForm" type="com.lanihuang.simplewebapp.form.LoginForm"/>
+        <form-bean name="productForm" type="com.lanihuang.simplewebapp.form.ProductForm"/>
+    </form-beans>
+
+    <!-- Global Forwards -->
+    <global-forwards>
+        <forward name="home" path="/home.do"/>
+        <forward name="login" path="/login.do"/>
+        <forward name="productList" path="/productList.do"/>
+        <forward name="userInfo" path="/userInfo.do"/>
+    </global-forwards>
+
+    <!-- Action Mappings -->
+    <action-mappings>
+
+        <!-- Home Action -->
+        <action path="/home"
+                type="com.lanihuang.simplewebapp.action.HomeAction"
+                validate="false">
+            <forward name="success" path="/WEB-INF/views/homeView.jsp"/>
+        </action>
+
+        <!-- Login Actions -->
+        <action path="/login"
+                type="com.lanihuang.simplewebapp.action.LoginAction"
+                validate="false">
+            <forward name="success" path="/WEB-INF/views/loginView.jsp"/>
+        </action>
+
+        <action path="/doLogin"
+                type="com.lanihuang.simplewebapp.action.DoLoginAction"
+                name="loginForm"
+                input="/login.do"
+                scope="request"
+                validate="true">
+            <forward name="success" path="/userInfo.do" redirect="true"/>
+            <forward name="failure" path="/login.do"/>
+        </action>
+
+        <!-- User Info Action (Protected) -->
+        <action path="/userInfo"
+                type="com.lanihuang.simplewebapp.action.UserInfoAction"
+                validate="false">
+            <forward name="success" path="/WEB-INF/views/userInfoView.jsp"/>
+            <forward name="login" path="/login.do" redirect="true"/>
+        </action>
+
+        <!-- Product List Action -->
+        <action path="/productList"
+                type="com.lanihuang.simplewebapp.action.ProductListAction"
+                validate="false">
+            <forward name="success" path="/WEB-INF/views/productListView.jsp"/>
+        </action>
+
+        <!-- Create Product Actions -->
+        <action path="/createProduct"
+                type="com.lanihuang.simplewebapp.action.CreateProductAction"
+                validate="false">
+            <forward name="success" path="/WEB-INF/views/createProductView.jsp"/>
+        </action>
+
+        <action path="/doCreateProduct"
+                type="com.lanihuang.simplewebapp.action.DoCreateProductAction"
+                name="productForm"
+                input="/createProduct.do"
+                scope="request"
+                validate="true">
+            <forward name="success" path="/productList.do" redirect="true"/>
+            <forward name="failure" path="/createProduct.do"/>
+        </action>
+
+        <!-- Edit Product Actions -->
+        <action path="/editProduct"
+                type="com.lanihuang.simplewebapp.action.EditProductAction"
+                validate="false">
+            <forward name="success" path="/WEB-INF/views/editProductView.jsp"/>
+            <forward name="notfound" path="/productList.do" redirect="true"/>
+        </action>
+
+        <action path="/doEditProduct"
+                type="com.lanihuang.simplewebapp.action.DoEditProductAction"
+                name="productForm"
+                input="/editProduct.do"
+                scope="request"
+                validate="true">
+            <forward name="success" path="/productList.do" redirect="true"/>
+            <forward name="failure" path="/editProduct.do"/>
+        </action>
+
+        <!-- Delete Product Action -->
+        <action path="/deleteProduct"
+                type="com.lanihuang.simplewebapp.action.DeleteProductAction"
+                validate="false">
+            <forward name="success" path="/productList.do" redirect="true"/>
+            <forward name="failure" path="/WEB-INF/views/deleteProductErrorView.jsp"/>
+        </action>
+
+    </action-mappings>
+
+    <!-- Message Resources -->
+    <message-resources parameter="com.lanihuang.simplewebapp.resources.ApplicationResources"/>
+
+    <!-- Controller Configuration -->
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+
+    <!-- Plug-ins -->
+    <plug-in className="org.apache.struts.tiles.TilesPlugin">
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml"/>
+        <set-property property="moduleAware" value="true"/>
+    </plug-in>
+
+</struts-config>
